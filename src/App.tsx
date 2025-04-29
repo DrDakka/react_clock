@@ -58,29 +58,28 @@ export const App: React.FC = () => {
   const [hasClock, setHasClock] = useState(true);
   const [clockName, setClockName] = useState('Clock-0');
 
+  const handleContext = (event: MouseEvent) => {
+    event.preventDefault();
+    setHasClock(false);
+  };
+
+  const handleClick = () => {
+    setHasClock(true);
+  };
+
   useEffect(() => {
     const timerId = window.setInterval(() => {
       setClockName(getRandomName());
     }, 3300);
 
-    document.addEventListener('contextmenu', (event: MouseEvent) => {
-      event.preventDefault();
-      setHasClock(false);
-    });
+    document.addEventListener('contextmenu', handleContext);
 
-    document.addEventListener('click', () => {
-      setHasClock(true);
-    });
+    document.addEventListener('click', handleClick);
 
     return () => {
       window.clearInterval(timerId);
-      document.removeEventListener('contextmenu', (event: MouseEvent) => {
-        event.preventDefault();
-        setHasClock(false);
-      });
-      document.removeEventListener('click', () => {
-        setHasClock(true);
-      });
+      document.removeEventListener('contextmenu', handleContext);
+      document.removeEventListener('click', handleClick);
     };
   }, []);
 
